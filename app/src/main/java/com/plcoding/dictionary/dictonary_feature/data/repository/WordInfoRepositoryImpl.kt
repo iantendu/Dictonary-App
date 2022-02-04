@@ -24,13 +24,26 @@ class WordInfoRepositoryImpl(
         try {
             val remoteWordInfos=api.getWordInfo(word)
             dao.deleteWordInfos(remoteWordInfos.map { it.word })
-
+            dao.insertWordInfos(remoteWordInfos.map { it.toWordInfoEntiy() })
 
         }catch (e:HttpException){
+            emit(Resource.Error(
+                message = "Oops,something went wrong!",
+                data = wordInfos
+            ))
 
         }catch (e:IOException){
+            emit(
+                Resource.Error(
+                message = "Couldn't reach server,check internet Connection.",
+                data = wordInfos
+            ))
 
         }
+        val newWordInfos=dao.getWordInfos(word).map { it.toWordInfo() }
+        emit(Resource.Success(
+            data = newWordInfos
+        ))
 
     }
 }
