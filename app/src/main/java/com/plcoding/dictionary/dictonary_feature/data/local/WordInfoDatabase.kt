@@ -12,4 +12,8 @@ import com.plcoding.dictionary.dictonary_feature.data.local.entity.WordInfoEntit
 @TypeConverters(Converters::class)
 abstract class WordInfoDatabase:RoomDatabase() {
     abstract val dao:WordInfoDao
+
+    companion object{
+        const val DATABASE_NAME="wordinfo_db"
+    }
 }
